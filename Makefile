@@ -23,3 +23,9 @@ down:
 	docker container rm -f vault
 	docker container rm -f postgres
 	docker network rm lab
+
+init:
+	./init.sh
+
+provision:
+	./provision.sh

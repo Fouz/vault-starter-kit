@@ -12,9 +12,14 @@ export cyan='\033[0;36m'
 export white='\033[0;37m'
 
 export info=$cyan
+export VAULT_ADDR=http://localhost:8200
 
 echo -e "${info}login${reset}"
 vault login wibble
+export VAULT_TOKEN=wibble
+
+echo -e "${info}Enable database secrets engine${reset}"
+vault secrets enable database
 
 echo -e "${info}Configure DB plugin${reset}"
 vault write database/config/postgresql \
