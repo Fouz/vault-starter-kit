@@ -1,9 +1,6 @@
-build:
-	docker build -t myvault .
-
-lab:
+up:
 	docker network create lab
-	docker run --name vault \
+	docker container run --name vault \
 		-it -d \
 		--network lab \
 		--cap-add=IPC_LOCK \
@@ -14,16 +11,15 @@ lab:
 		-w /work \
 		-v $$(pwd):/work \
 		-p 8200:8200 \
-		myvault
-	docker run -d \
+		vault
+	docker container run -d \
 		--name postgres \
 		--network lab \
 		-e POSTGRES_USER=root \
 		-e POSTGRES_PASSWORD=rootpassword \
 		postgres
-exec: 
-	docker exec -it vault bash
 
-tidy:
-	docker rm -f vault
-	docker rm -f postgres
+down:
+	docker container rm -f vault
+	docker container rm -f postgres
+	docker network rm lab
