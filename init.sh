@@ -14,14 +14,14 @@ export white='\033[0;37m'
 export info=$cyan
 export VAULT_ADDR=http://localhost:8200
 
-echo -e "${info}login${reset}"
+echo -e "\n${info}login${reset}"
 vault login wibble
 export VAULT_TOKEN=wibble
 
-echo -e "${info}Enable database secrets engine${reset}"
+echo -e "\n${info}Enable database secrets engine${reset}"
 vault secrets enable database
 
-echo -e "${info}Configure DB plugin${reset}"
+echo -e "\n${info}Configure DB plugin${reset}"
 vault write database/config/postgresql \
     plugin_name=postgresql-database-plugin \
     allowed_roles="readonly" \
@@ -29,18 +29,20 @@ vault write database/config/postgresql \
     username="root" \
     password="rootpassword"
 
-echo -e "${info}Create role${reset}"
-vault write database/roles/readonly db_name=postgresql \
+echo -e "\n${info}Create role${reset}"
+vault write database/roles/readonly \
+        db_name=postgresql \
         creation_statements=@readonly.sql \
-        default_ttl=1h max_ttl=24h
+        default_ttl=1h \
+        max_ttl=24h
 
-echo -e "${info}Create policy${reset}"
+echo -e "\n${info}Create policy${reset}"
 vault policy write apps apps-policy.hcl
 
-echo -e "${info}Query token${reset}"
+echo -e "\n${info}Query token${reset}"
 APPS_TOKEN=$(vault token create -policy="apps" -format=json | jq '.auth.client_token' | xargs)
 
-echo -e "${info}Token${reset}"
+echo -e "\n${info}Token${reset}"
 echo -e "\n\n${green}${APPS_TOKEN}${reset}\n\n"
 
 echo -e "${info}Generate Credentials${reset}"
