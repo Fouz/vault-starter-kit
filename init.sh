@@ -13,7 +13,7 @@ export white='\033[0;37m'
 
 export info=$cyan
 
-echo -e "${info}infoon${reset}"
+echo -e "${info}login${reset}"
 vault login wibble
 
 echo -e "${info}Configure DB plugin${reset}"
